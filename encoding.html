@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Encoding Tool</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1a1a2b;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: var(--secondary);
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 90%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border-radius: 0 0 15px 15px;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 1rem 5%;
+      backdrop-filter: blur(10px);
+      background-color: rgba(42,42,60,0.9);
+    }
+
+    nav h1 {
+      color: #6c63ff;
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(108,99,255,0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::before {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+    .container, .result-panel {
+      flex: 1 1 50%;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    .container {
+      background-color: #1a1a2b;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    .result-panel {
+      background-color: #6c63ff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #6c63ff;
+      margin-top: 100px;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #6c63ff;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #6c63ff;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h1>CyberEncoder</h1>
+    <div class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="ciphers.html">CipherTool</a>
+      <a href="password.html">PasswordGenerator</a>
+      <a href="explaination.html">How It Works</a>
+    </div>
+  </nav>
+  <div class="layout">
+    <div class="container">
+      <h2>Encoding Tool</h2>
+      <input id="text" type="text" placeholder="Enter text" />
+
+      <div class="section-title">Encoding Type</div>
+      <select id="encodingSelect">
+        <option value="base64">Base64 Encode/Decode</option>
+        <option value="url">URL Encode/Decode</option>
+      </select>
+
+      <button onclick="runEncoding(false)">Encode</button>
+      <button onclick="runEncoding(true)">Decode</button>
+      <br><br>
+      <!-- <a href="index2.html" style="font-size: 16px; color: #6c63ff; text-decoration: none;">
+        &larr; Back to Main Page
+      </a> -->
+      
+    </div>
+    
+
+    <div class="result-panel">
+      <p id="result">Result will appear here...</p>
+    </div>
+  </div>
+
+  <script>
+    function textInput() {
+      return document.getElementById('text').value;
+    }
+
+    function showResult(message) {
+      document.getElementById("result").textContent = `Result: ${message}`;
+    }
+
+    function runEncoding(decode = false) {
+      const text = textInput();
+      const type = document.getElementById("encodingSelect").value;
+      let result = "";
+
+      if (!text) return showResult("Please enter text.");
+
+      try {
+        if (type === "base64") {
+          result = decode ? atob(text) : btoa(text);
+        } else if (type === "url") {
+          result = decode ? decodeURIComponent(text) : encodeURIComponent(text);
+        }
+        showResult(result);
+      } catch (e) {
+        showResult("Error during encoding/decoding.");
+      }
+    }
+  </script>
+</body>
+</html>

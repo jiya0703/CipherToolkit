@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cipher Guide</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1a1a2b;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1a1a2b;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h2 {
+      margin: 0;
+      color: #6c63ff;
+    }
+
+
+    .nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: #eaf4ff;
+}
+
+/* Responsive navbar stack for smaller screens */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .title-section {
+    padding-top: 10px;
+  }
+}
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color:#6c63ff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.3s ease;
+    }
+
+    nav a:hover {
+      opacity: 0.7;
+    }
+
+    .title-section {
+      background-color: #6c63ff;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .cipher-card {
+      background-color: white;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .cipher-card:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      color: #6c63ff;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .highlight {
+      background-color: #eaf4ff;
+      padding: 8px;
+      border-left: 5px solid #6c63ff;
+      font-family: monospace;
+    }
+
+    .toggle-btn {
+      background-color: #6c63ff;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .toggle-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Cipher Toolkit</h2>
+    <nav class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="encoding.html">EncodingTool</a>
+      <a href="ciphers.html">CipherTool</a>
+      <a href="password.html">PasswordGenerator</a>
+    </nav>
+  </header>
+  
+
+  <div class="title-section">
+    <h1>Cipher & Encoding Techniques Explained</h1>
+    <p>Understand how each cipher works with easy-to-read descriptions and examples.</p>
+  </div>
+
+  <div class="container">
+    <div class="cipher-card">
+      <h2>Caesar Cipher</h2>
+      <p>A substitution cipher where each letter is shifted by a fixed number of positions.</p>
+      <p class="highlight">Example: "HELLO" with shift 3 → "KHOOR"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>Vigenère Cipher</h2>
+      <p>Uses a keyword to shift letters using a repeating sequence of Caesar ciphers.</p>
+      <p class="highlight">Example: Text: "ATTACK", Key: "LEMON" → Ciphertext: "LXFOPV"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>Atbash Cipher</h2>
+      <p>A monoalphabetic cipher where the alphabet is reversed. A ↔ Z, B ↔ Y, etc.</p>
+      <p class="highlight">Example: "HELLO" → "SVOOL"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>ROT13 Cipher</h2>
+      <p>A special case of Caesar Cipher with a fixed shift of 13.</p>
+      <p class="highlight">Example: "HELLO" → "URYYB"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>Rail Fence Cipher</h2>
+      <p>A transposition cipher where text is written in a zigzag pattern on multiple levels (rails).</p>
+      
+     
+        <p class="highlight">Plaintext: "HELLO WORLD" with 3 rails → "HOLELWRDLO"</p>
+   
+    </div>
+
+    <div class="cipher-card">
+      <h2>Columnar Transposition</h2>
+      <p>Text is written in rows under column headers defined by the keyword and read column by column.</p>
+      <p class="highlight">Plaintext: "WE ARE DISCOVERED" Key: "ZEBRAS" → Ciphertext: "EVLNEACDTESEAROF"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>Playfair Cipher</h2>
+      <p>A digraph substitution cipher using a 5x5 matrix of letters based on a keyword.</p>
+      <p class="highlight">Example: "HELLO" + Key: "MONARCHY" → "GCNVNY"</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>Base64 Encoding</h2>
+      <p>Binary-to-text encoding scheme representing binary data in an ASCII string format.</p>
+      <p class="highlight">Example: "HELLO" → "SEVMTE8="</p>
+    </div>
+
+    <div class="cipher-card">
+      <h2>URL Encoding</h2>
+      <p>Encodes special characters in URLs using % followed by two hex digits.</p>
+      <p class="highlight">Example: "hello world" → "hello%20world"</p>
+    </div>
+  </div>
+
+  <script>
+    function toggle(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

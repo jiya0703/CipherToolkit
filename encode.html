@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encoding Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        p {
+            font-weight: bold;
+            color: #007BFF;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Encoding Tools</h2>
+        <input id="text" type="text" placeholder="Enter text" />
+        
+        <h3>Base64 Encoding</h3>
+        <button id="encodeBase64">Encode to Base64</button>
+        <button id="decodeBase64">Decode from Base64</button>
+        
+        <h3>Base32 Encoding</h3>
+        <button id="encodeBase32">Encode to Base32</button>
+        <button id="decodeBase32">Decode from Base32</button>
+        
+        <h3>URL Encoding</h3>
+        <button id="encodeURL">Encode URL</button>
+        <button id="decodeURL">Decode URL</button>
+        
+        <button onclick="window.location.href='index.html'" style="background-color: #28a745;">Back to Ciphers</button>
+        
+        <p id="result"></p>
+    </div>
+    
+    <script>
+        const encodeBase64 = (text) => btoa(text);
+        const decodeBase64 = (text) => atob(text);
+        
+        const encodeBase32 = (text) => {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+            let binary = text.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join('');
+            let output = "";
+            for (let i = 0; i < binary.length; i += 5) {
+                output += alphabet[parseInt(binary.substring(i, i + 5).padEnd(5, '0'), 2)];
+            }
+            while (output.length % 8 !== 0) {
+                output += "=";
+            }
+            return output;
+        };
+        
+        const decodeBase32 = (text) => {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+            let binary = text.replace(/=/g, '').split('').map(char => alphabet.indexOf(char).toString(2).padStart(5, '0')).join('');
+            let output = "";
+            for (let i = 0; i < binary.length; i += 8) {
+                output += String.fromCharCode(parseInt(binary.substring(i, i + 8), 2));
+            }
+            return output;
+        };
+        
+        const encodeURL = (text) => encodeURIComponent(text);
+        const decodeURL = (text) => decodeURIComponent(text);
+        
+        document.getElementById("encodeBase64").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${encodeBase64(text)}`;
+        });
+        
+        document.getElementById("decodeBase64").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${decodeBase64(text)}`;
+        });
+        
+        document.getElementById("encodeBase32").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${encodeBase32(text)}`;
+        });
+        
+        document.getElementById("decodeBase32").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${decodeBase32(text)}`;
+        });
+        
+        document.getElementById("encodeURL").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${encodeURL(text)}`;
+        });
+        
+        document.getElementById("decodeURL").addEventListener("click", () => {
+            let text = document.getElementById("text").value;
+            document.getElementById("result").textContent = `Result: ${decodeURL(text)}`;
+        });
+    </script>
+</body>
+</html>

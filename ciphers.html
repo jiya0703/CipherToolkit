@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ciphers</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color:#1a1a2b;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: var(--secondary);
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 90%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border-radius: 0 0 15px 15px;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 1rem 5%;
+      backdrop-filter: blur(10px);
+      background-color: rgba(42,42,60,0.9);
+    }
+
+    nav h1 {
+      color: #6c63ff;
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(108,99,255,0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::before {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 100vh;
+    }
+    .container, .result-panel {
+      flex: 1 1 50%;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    .container {
+      background-color: #1a1a2b;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    .result-panel {
+      background-color: #6c63ff;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h2 {
+
+      margin-top: 100px;
+      text-align: center;
+      color: #6c63ff;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #6c63ff;
+    }
+
+
+    @media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 5%;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .nav-links a {
+    padding: 0.6rem 0;
+    width: 100%;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  nav h1 {
+    font-size: 1.4rem;
+  }
+
+  .container {
+    padding-top: 160px; /* more spacing for stacked nav */
+  }
+}
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h1>CyberEncoder</h1>
+    <div class="nav-links">
+      <a href="index2.html">Home</a>
+      <a href="encoding.html">EncodingTool</a>
+      <a href="password.html">PasswordGenerator</a>
+      <a href="explaination.html">How It Works</a>
+    </div>
+  </nav>
+  
+    
+  <div class="layout">
+    <div class="container">
+      <h2>Cipher Tool</h2>
+      <input id="text" type="text" placeholder="Enter text" />
+      <input id="key" type="text" placeholder="Enter key / shift (if needed)" />
+
+      <div class="section-title">Ciphers</div>
+      <select id="cipherSelect">
+        <option value="caesar">Caesar Cipher</option>
+        <option value="vigenere">Vigenère Cipher</option>
+        <option value="atbash">Atbash Cipher</option>
+        <option value="rot13">ROT13 Cipher</option>
+        <option value="railFence">Rail Fence Cipher</option>
+        <option value="columnar">Columnar Transposition</option>
+        <option value="playfair">Playfair Cipher</option>
+      </select>     
+      <button onclick="runCipher(false)">Encrypt</button>
+      <button onclick="runCipher(true)">Decrypt</button>
+      
+      <br><br>
+      <!-- <a href="index2.html" style="font-size: 16px; color: #007BFF; text-decoration: none;">
+        &larr; Back to Main Page
+      </a> -->
+      
+    
+  </div>
+  <div class="result-panel">
+    <p id="result">Result will appear here...</p>
+  </div>
+  <script>
+    function textInput() {
+      return document.getElementById('text').value;
+    }
+    function keyInput() {
+      return document.getElementById('key').value;
+    }
+    function showResult(message) {
+      document.getElementById("result").textContent = `Result: ${message}`;
+    }
+
+    function caesar(text, shift, decrypt = false) {
+      shift = decrypt ? -shift : shift;
+      return text.split("").map(char => {
+        if (/[a-zA-Z]/.test(char)) {
+          let base = char < 'a' ? 65 : 97;
+          return String.fromCharCode((char.charCodeAt(0) - base + shift + 26) % 26 + base);
+        }
+        return char;
+      }).join("");
+    }
+
+    function vigenere(text, key, decrypt = false) {
+      let res = '', j = 0;
+      key = key.toLowerCase();
+      for (let i = 0; i < text.length; i++) {
+        let c = text[i];
+        if (/[a-zA-Z]/.test(c)) {
+          let base = c >= 'a' ? 97 : 65;
+          let shift = key[j % key.length].charCodeAt(0) - 97;
+          if (decrypt) shift = -shift;
+          res += String.fromCharCode((c.charCodeAt(0) - base + shift + 26) % 26 + base);
+          j++;
+        } else res += c;
+      }
+      return res;
+    }
+
+    function atbash(text) {
+      return text.split("").map(char => {
+        if (/[a-zA-Z]/.test(char)) {
+          let base = char >= 'a' ? 97 : 65;
+          return String.fromCharCode(base + 25 - (char.charCodeAt(0) - base));
+        }
+        return char;
+      }).join("");
+    }
+
+    function rot13(text) {
+      return caesar(text, 13);
+    }
+
+    function railFenceEncrypt(text, rails = 3) {
+      let fence = Array.from({length: rails}, () => []);
+      let rail = 0, dir = 1;
+      for (let char of text) {
+        fence[rail].push(char);
+        rail += dir;
+        if (rail === 0 || rail === rails - 1) dir *= -1;
+      }
+      return fence.flat().join("");
+    }
+
+    function railFenceDecrypt(text, rails = 3) {
+      const len = text.length;
+      const fence = Array.from({length: rails}, () => Array(len).fill(null));
+      let rail = 0, dir = 1;
+      for (let i = 0; i < len; i++) {
+        fence[rail][i] = '*';
+        rail += dir;
+        if (rail === 0 || rail === rails - 1) dir *= -1;
+      }
+      let i = 0;
+      for (let r = 0; r < rails; r++) {
+        for (let c = 0; c < len; c++) {
+          if (fence[r][c] === '*' && i < len) fence[r][c] = text[i++];
+        }
+      }
+      let result = '';
+      rail = 0; dir = 1;
+      for (let c = 0; c < len; c++) {
+        result += fence[rail][c];
+        rail += dir;
+        if (rail === 0 || rail === rails - 1) dir *= -1;
+      }
+      return result;
+    }
+
+    function columnarEncrypt(text, key) {
+      const cols = key.length;
+      const rows = Math.ceil(text.length / cols);
+      let grid = Array.from({length: rows}, () => Array(cols).fill(' '));
+      let i = 0;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (i < text.length) grid[r][c] = text[i++];
+        }
+      }
+      const order = [...key].map((_, i) => i).sort((a, b) => key[a].localeCompare(key[b]));
+      return order.map(c => grid.map(r => r[c]).join("")).join("");
+    }
+
+    function columnarDecrypt(text, key) {
+      const cols = key.length;
+      const rows = Math.ceil(text.length / cols);
+      let grid = Array.from({length: rows}, () => Array(cols).fill(' '));
+      const order = [...key].map((_, i) => i).sort((a, b) => key[a].localeCompare(key[b]));
+      let pos = 0;
+      for (let i = 0; i < cols; i++) {
+        const c = order[i];
+        for (let r = 0; r < rows; r++) {
+          if (pos < text.length) grid[r][c] = text[pos++];
+        }
+      }
+      return grid.flat().join("").trim();
+    }
+
+    function playfair(text, key, decrypt = false) {
+      text = text.toUpperCase().replace(/[^A-Z]/g, '').replace(/J/g, 'I');
+      key = key.toUpperCase().replace(/[^A-Z]/g, '').replace(/J/g, 'I');
+      let seen = new Set(), table = [], pos = {};
+      key += 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+      for (let char of key) {
+        if (!seen.has(char)) {
+          seen.add(char);
+          table.push(char);
+        }
+      }
+      table.forEach((c, i) => pos[c] = [Math.floor(i / 5), i % 5]);
+
+      let pairs = [];
+      for (let i = 0; i < text.length; i++) {
+        let a = text[i], b = text[i + 1];
+        if (a === b || !b) {
+          b = 'X';
+        } else {
+          i++;
+        }
+        pairs.push([a, b]);
+      }
+
+      return pairs.map(([a, b]) => {
+        let [r1, c1] = pos[a], [r2, c2] = pos[b];
+        if (r1 === r2) {
+          c1 = (c1 + (decrypt ? 4 : 1)) % 5;
+          c2 = (c2 + (decrypt ? 4 : 1)) % 5;
+        } else if (c1 === c2) {
+          r1 = (r1 + (decrypt ? 4 : 1)) % 5;
+          r2 = (r2 + (decrypt ? 4 : 1)) % 5;
+        } else {
+          [c1, c2] = [c2, c1];
+        }
+        return table[r1 * 5 + c1] + table[r2 * 5 + c2];
+      }).join('');
+    }
+
+    function runCipher(decrypt = false) {
+      const text = textInput();
+      const key = keyInput();
+      const cipher = document.getElementById("cipherSelect").value;
+      let result = "";
+
+      if (!text) return showResult("Please enter text.");
+
+      if (cipher === "caesar") {
+        if (!key) return showResult("Please enter a key.");
+        if (!/^-?\d+$/.test(key)) return showResult("Key must be a numeric value.");
+        result = caesar(text, parseInt(key), decrypt);
+      } else if (cipher === "vigenere" || cipher === "columnar" || cipher === "playfair") {
+        if (!key) return showResult("Please enter a key.");
+        if (!/^[a-zA-Z]+$/.test(key)) return showResult("Key must contain only letters.");
+        result = cipher === "vigenere"
+          ? vigenere(text, key, decrypt)
+          : cipher === "columnar"
+          ? (decrypt ? columnarDecrypt(text, key) : columnarEncrypt(text, key))
+          : playfair(text, key, decrypt);
+      } else if (cipher === "railFence") {
+        result = decrypt ? railFenceDecrypt(text) : railFenceEncrypt(text);
+      } else if (cipher === "atbash") {
+        result = atbash(text);
+      } else if (cipher === "rot13") {
+        result = rot13(text);
+      }
+
+      showResult(result);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
